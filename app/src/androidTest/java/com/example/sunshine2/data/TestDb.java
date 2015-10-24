@@ -1,8 +1,11 @@
 package com.example.sunshine2.data;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
+
+import junit.framework.Assert;
 
 import java.util.HashSet;
 
@@ -97,24 +100,29 @@ public class TestDb extends AndroidTestCase  {
         where you can uncomment out the "createNorthPoleLocationValues" function.  You can
         also make use of the ValidateCurrentRecord function from within TestUtilities.
     */
-    public void testLocationTable() {
+    public long testLocationTable() {
         // First step: Get reference to writable database
-
+        SQLiteDatabase db = new WeatherDbHelper(this.mContext).getReadableDatabase();
+        assertEquals(true, db.isOpen());
         // Create ContentValues of what you want to insert
         // (you can use the createNorthPoleLocationValues if you wish)
-
+        ContentValues contentValues = TestUtilities.createNorthPoleLocationValues();
         // Insert ContentValues into database and get a row ID back
-
+        long locationRowId = db.insert(WeatherContract.LocationEntry.TABLE_NAME, null, contentValues);
+        assertTrue("Error: Failure to insert North Pole Location Values", locationRowId != -1);
         // Query the database and receive a Cursor back
-
+        Cursor cursor = db.rawQuery("select * from " + WeatherContract.LocationEntry.TABLE_NAME + " where _id = " + Long.toString(locationRowId), null);
         // Move the cursor to a valid database row
-
+        assertTrue("Error: This means that we were unable to query the database for table information.", cursor.moveToFirst());
         // Validate data in resulting Cursor with the original ContentValues
         // (you can use the validateCurrentRecord function in TestUtilities to validate the
         // query if you like)
-
+        TestUtilities.validateCursor("Valio madres en validateCursor", cursor, contentValues);
         // Finally, close the cursor and database
+        cursor.close();
+        db.close();
 
+        return locationRowId;
     }
 
     /*
