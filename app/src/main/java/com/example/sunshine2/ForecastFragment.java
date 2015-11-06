@@ -36,6 +36,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 
+import com.example.sunshine2.BuildConfig;// muy importante esto!
+
 /**
  * A placeholder fragment containing a simple view.
  */
@@ -286,6 +288,7 @@ public class ForecastFragment extends Fragment {
                 String postalCode = params[0];
                 String apiMode = "json";
                 String apiUnits = "metric";//params[1];
+                String APPID_PARAM = "APPID";
 
 
                 // Construct the URL for the OpenWeatherMap query
@@ -302,7 +305,8 @@ public class ForecastFragment extends Fragment {
                         .appendQueryParameter("q", postalCode)
                         .appendQueryParameter("mode", apiMode)
                         .appendQueryParameter("units", apiUnits)
-                        .appendQueryParameter("cnt", Integer.toString(numDays));
+                        .appendQueryParameter("cnt", Integer.toString(numDays))
+                        .appendQueryParameter(APPID_PARAM, BuildConfig.OPEN_WEATHER_MAP_API_KEY);
 
                 //URL url = new URL("http://api.openweathermap.org/data/2.5/forecast/daily?q=94043&mode=json&units=metric&cnt=7");
 

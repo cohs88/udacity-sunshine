@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.sunshine2.BuildConfig;// muy importante esto!
+
 
 public class MainActivity extends ActionBarActivity {
     private static String LOG_TAG = "Chori Activity";
@@ -19,7 +21,14 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.v(LOG_TAG, "onCreate");
+        //Log.v(LOG_TAG, "ay wey! " + BuildConfig.OPEN_WEATHER_MAP_API_KEY);
+        /*
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.container, new ForecastFragment())
+                    .commit();
+        }
+        */
     }
 
     @Override
