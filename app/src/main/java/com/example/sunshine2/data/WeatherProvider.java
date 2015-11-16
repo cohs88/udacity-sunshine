@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.util.Log;
 
 public class WeatherProvider extends ContentProvider {
 
@@ -56,7 +57,8 @@ public class WeatherProvider extends ContentProvider {
                     "." + WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING + " = ? AND " +
                     WeatherContract.WeatherEntry.COLUMN_DATE + " = ? ";
 
-    private Cursor getWeatherByLocationSetting(Uri uri, String[] projection, String sortOrder) {
+    private Cursor getWeatherByLocationSetting(Uri uri, String[] projection, String sortOrder)
+    {
         String locationSetting = WeatherContract.WeatherEntry.getLocationSettingFromUri(uri);
         long startDate = WeatherContract.WeatherEntry.getStartDateFromUri(uri);
 
@@ -81,8 +83,8 @@ public class WeatherProvider extends ContentProvider {
         );
     }
 
-    private Cursor getWeatherByLocationSettingAndDate(
-            Uri uri, String[] projection, String sortOrder) {
+    private Cursor getWeatherByLocationSettingAndDate(Uri uri, String[] projection, String sortOrder)
+    {
         String locationSetting = WeatherContract.WeatherEntry.getLocationSettingFromUri(uri);
         long date = WeatherContract.WeatherEntry.getDateFromUri(uri);
 
@@ -95,6 +97,32 @@ public class WeatherProvider extends ContentProvider {
                 sortOrder
         );
     }
+
+    private Cursor getWeather(Uri uri, String[] projection, String sortOrder)
+    {
+        return sWeatherByLocationSettingQueryBuilder.query(mOpenHelper.getReadableDatabase(),
+                projection,
+                null,
+                null,
+                null,
+                null,
+                sortOrder
+        );
+    }
+
+    private Cursor getLocation(Uri uri, String[] projection, String sortOrder)
+    {
+
+        return sWeatherByLocationSettingQueryBuilder.query(mOpenHelper.getReadableDatabase(),
+                projection,
+                null,
+                null,
+                null,
+                null,
+                sortOrder
+        );
+    }
+
 
     /*
         Students: Here is where you need to create the UriMatcher. This UriMatcher will
@@ -176,12 +204,28 @@ public class WeatherProvider extends ContentProvider {
             }
             // "weather"
             case WEATHER: {
-                retCursor = null;
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        WeatherContract.WeatherEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
                 break;
             }
             // "location"
             case LOCATION: {
-                retCursor = null;
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        WeatherContract.LocationEntry.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
                 break;
             }
 
