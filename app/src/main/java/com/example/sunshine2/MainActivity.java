@@ -99,11 +99,14 @@ public class MainActivity extends ActionBarActivity {
     private void openPreferredLocationMap()
     {
         Intent intent = new Intent(Intent.ACTION_VIEW);
+        /*
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         String settingLocation = sharedPreferences.getString(
                 getString(R.string.pref_location_key),
                 getString(R.string.pref_location_default)
         );
+        */
+        String settingLocation = Utility.getPreferredLocation(this);
 
         //Uri geoLocation = Uri.parse("geo:0,0?q=" + settingLocation);
         Uri geoLocation = Uri.parse("geo:0,0?").buildUpon().appendQueryParameter("q", settingLocation).build();

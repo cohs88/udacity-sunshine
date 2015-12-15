@@ -3,6 +3,7 @@ package com.example.sunshine2;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -37,13 +38,15 @@ import java.util.ArrayList;
 
 
 import com.example.sunshine2.BuildConfig;// muy importante esto!
+import com.example.sunshine2.data.WeatherContract;
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class ForecastFragment extends Fragment {
 
-    ArrayAdapter<String> mForecastAdapter;
+    //ArrayAdapter<String> mForecastAdapter;
+    ForecastAdapter mForecastAdapter;
     public ForecastFragment() {
     }
 
@@ -64,7 +67,14 @@ public class ForecastFragment extends Fragment {
         weekForecast.add("Thurs - Sunny - 88/63");
 
         // contexto, layout, listview, datos
-        mForecastAdapter = new ArrayAdapter<String>(getActivity(), R.layout.list_item_forecast, R.id.list_item_forecast_textview, new ArrayList<String>());
+        String locationSetting = Utility.getPreferredLocation(getActivity());
+        // sort order : ascending by date
+        String sortOrder = WeatherContract.WeatherEntry.COLUMN_DATE + " ASC";
+        Uri weatherForLocationUri = WeatherContract.WeatherEntry.buildWeatherLocationWithStartDate(locationSetting, System.currentTimeMillis());
+        Cursor cursor = getActivity().getContentResolver().query(weatherForLocationUri, null, null, null,sortOrder);
+        mForecastAdapter = new ForecastAdapter(getActivity(), cursor, 0);
+
+        //mForecastAdapter = new ArrayAdapter<String>(getActivity(), R.layout.list_item_forecast, R.id.list_item_forecast_textview, new ArrayList<String>());
 
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
@@ -74,6 +84,7 @@ public class ForecastFragment extends Fragment {
 
 
         /*url*/
+        /*
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -88,6 +99,7 @@ public class ForecastFragment extends Fragment {
                 startActivity(detailIntent);
             }
         });
+        */
         /*url*/
 
         return view;
@@ -109,6 +121,7 @@ public class ForecastFragment extends Fragment {
 
     private void updateWeather()
     {
+        /*
         String settingLocation = "";
         String settingUnits = "";
         //settings
@@ -128,6 +141,10 @@ public class ForecastFragment extends Fragment {
         //new FetchWeatherTask().doInBackground();
         FetchWeatherTask weatherTask = new FetchWeatherTask(getActivity(), mForecastAdapter);
         weatherTask.execute(settingLocation, settingUnits);
+        */
+        FetchWeatherTask weatherTask = new FetchWeatherTask(getActivity());
+        String location = Utility.getPreferredLocation(getActivity());
+        weatherTask.execute(location);
     }
 
     @Override
