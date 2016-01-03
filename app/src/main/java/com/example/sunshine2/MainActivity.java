@@ -15,20 +15,21 @@ import com.example.sunshine2.BuildConfig;// muy importante esto!
 
 public class MainActivity extends ActionBarActivity {
     private static String LOG_TAG = "Chori Activity";
-
+    public String mLocation;
+    private final String FORECASTFRAGMENT_TAG = "FFTAG";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mLocation = Utility.getPreferredLocation(this);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Log.v(LOG_TAG, "ay wey! " + BuildConfig.OPEN_WEATHER_MAP_API_KEY);
-        /*
+
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new ForecastFragment())
+                    .add(R.id.container, new ForecastFragment(), FORECASTFRAGMENT_TAG)
                     .commit();
         }
-        */
     }
 
     @Override
@@ -56,7 +57,15 @@ public class MainActivity extends ActionBarActivity {
     protected void onResume() {
         super.onResume();
 
-        Log.v(LOG_TAG, "onResume");
+        String location = Utility.getPreferredLocation( this );
+        // update the location in our second pane using the fragment manager
+        if (location != null && !location.equals(mLocation)) {
+            ForecastFragment ff = (ForecastFragment)getSupportFragmentManager().findFragmentByTag(FORECASTFRAGMENT_TAG);
+            if ( null != ff ) {
+                ff.onLocationChanged();
+            }
+            mLocation = location;
+        }
     }
 
     @Override

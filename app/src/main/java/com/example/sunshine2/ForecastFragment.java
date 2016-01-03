@@ -159,12 +159,15 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         inflater.inflate(R.menu.forecastfragment, menu);
     }
 
+    /*cada que el dispositivo se rota se hace una llamada al servicio de weather*/
+    /*
     @Override
     public void onStart() {
         super.onStart();
 
         updateWeather();
     }
+    */
 
     private void updateWeather()
     {
@@ -183,6 +186,12 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    // since we read the location when we create the loader, all we need to do is restart things
+    void onLocationChanged( ) {
+        updateWeather();
+        getLoaderManager().restartLoader(FORECAST_LOADER, null, this);
     }
 
 }
