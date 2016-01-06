@@ -19,6 +19,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ForecastAdapter extends CursorAdapter {
+    private final int VIEW_TYPE_TODAY = 0;
+    private final int VIEW_TYPE_FUTURE_DAY = 1;
+
     // These indices are tied to FORECAST_COLUMNS.  If FORECAST_COLUMNS changes, these
     // must change.
     static final int COL_WEATHER_ID = 0;
@@ -34,6 +37,16 @@ public class ForecastAdapter extends CursorAdapter {
 
     public ForecastAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return (position == 0) ? VIEW_TYPE_TODAY : VIEW_TYPE_FUTURE_DAY;
+    }
+
+    public int getViewTypeCount()
+    {
+        return 2;
     }
 
     /**
@@ -76,9 +89,20 @@ public class ForecastAdapter extends CursorAdapter {
      */
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        View view = LayoutInflater.from(context).inflate(R.layout.list_item_forecast, parent, false);
+        // Choose the layout type
+        int viewType = getItemViewType(cursor.getPosition());
+        int layoutId = -1;
+        // TODO: Determine layoutId from viewType
+        if (viewType == VIEW_TYPE_TODAY){
+            layoutId = R.layout.list_item_forecast_today;
+        }
+        else if(viewType == VIEW_TYPE_FUTURE_DAY)
+        {
+            layoutId = R.layout.list_item_forecast;
+        }
 
-        return view;
+
+        return LayoutInflater.from(context).inflate(layoutId, parent, false);
     }
 
     /*
