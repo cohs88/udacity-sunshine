@@ -160,14 +160,12 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     /*cada que el dispositivo se rota se hace una llamada al servicio de weather*/
-    /*
     @Override
     public void onStart() {
         super.onStart();
 
         updateWeather();
     }
-    */
 
     private void updateWeather()
     {
