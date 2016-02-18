@@ -22,6 +22,9 @@ public class ForecastAdapter extends CursorAdapter {
     private final int VIEW_TYPE_TODAY = 0;
     private final int VIEW_TYPE_FUTURE_DAY = 1;
 
+    // flag to determine if we want to use a separate view for "today"
+    private boolean mUseTodayLayout = true;
+
     // These indices are tied to FORECAST_COLUMNS.  If FORECAST_COLUMNS changes, these
     // must change.
     static final int COL_WEATHER_ID = 0;
@@ -61,7 +64,7 @@ public class ForecastAdapter extends CursorAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        return (position == 0) ? VIEW_TYPE_TODAY : VIEW_TYPE_FUTURE_DAY;
+        return (position == 0 && mUseTodayLayout) ? VIEW_TYPE_TODAY : VIEW_TYPE_FUTURE_DAY;
     }
 
     public int getViewTypeCount()
@@ -92,6 +95,11 @@ public class ForecastAdapter extends CursorAdapter {
         ViewHolder viewHolder = new ViewHolder(view);
         view.setTag(viewHolder);
         return view;
+    }
+
+    public void setUseTodayLayout(boolean useTodayLayout)
+    {
+        mUseTodayLayout = useTodayLayout;
     }
 
     /*
