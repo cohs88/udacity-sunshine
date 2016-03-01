@@ -1,27 +1,21 @@
 <resources>
-    <string name="title_activity_settings">Settings</string>
+
 
     <!-- Strings related to Settings -->
 
-    <string name="pref_location_key">location</string>
-    <string name="pref_location_label">Location</string>
-    <string name="pref_location_default">94043</string>
 
-    <string name="pref_units_key">units</string>
-    <string name="pref_units_label">Pick your Units</string>
-    <string name="pref_units_default">metric</string>
+
 
     <!-- Label for metric option in temperature unit preference [CHAR LIMIT=25] -->
-    <string name="pref_units_label_metric">Metric</string>
+
 
     <!-- Label for imperial option in temperature unit preference [CHAR LIMIT=25] -->
-    <string name="pref_units_label_imperial">Imperial</string>
 
     <!-- Value in SharedPreferences for metric temperature unit option [CHAR LIMIT=NONE] -->
-    <string name="pref_units_metric" translatable="false">metric</string>
+
 
     <!-- Value in SharedPreferences for imperial temperature unit option [CHAR LIMIT=NONE] -->
-    <string name="pref_units_imperial" translatable="false">imperial</string>
+
 
     <string-array name="pref_location_units_array_titles">
         <item>@string/pref_units_label_metric</item>
