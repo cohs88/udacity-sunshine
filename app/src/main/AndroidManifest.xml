@@ -17,6 +17,8 @@
             android:exported="true">
         </provider>
 
+        <service android:name="service.SunshineService" />
+
         <activity
             android:name=".MainActivity"
             android:theme="@style/ForecastTheme"

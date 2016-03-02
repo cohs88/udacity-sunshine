@@ -22,6 +22,8 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.content.CursorLoader;
 
+import service.SunshineService;
+
 /**
  * A placeholder fragment containing a simple view.
  */
@@ -224,9 +226,14 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     private void updateWeather()
     {
+        /*
         FetchWeatherTask weatherTask = new FetchWeatherTask(getActivity());
         String location = Utility.getPreferredLocation(getActivity());
         weatherTask.execute(location);
+        */
+        Intent intent = new Intent(getActivity(), SunshineService.class);
+        intent.putExtra(SunshineService.LOCATION_QUERY_EXTRA,  Utility.getPreferredLocation(getActivity()));
+        getActivity().startService(intent);
     }
 
     @Override
