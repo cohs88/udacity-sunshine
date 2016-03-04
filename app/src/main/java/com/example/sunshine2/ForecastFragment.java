@@ -1,5 +1,8 @@
 package com.example.sunshine2;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -221,19 +224,24 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     public void onStart() {
         super.onStart();
 
-        updateWeather();
+        //updateWeather();
     }
 
     private void updateWeather()
     {
         /*
-        FetchWeatherTask weatherTask = new FetchWeatherTask(getActivity());
-        String location = Utility.getPreferredLocation(getActivity());
-        weatherTask.execute(location);
-        */
         Intent intent = new Intent(getActivity(), SunshineService.class);
         intent.putExtra(SunshineService.LOCATION_QUERY_EXTRA,  Utility.getPreferredLocation(getActivity()));
         getActivity().startService(intent);
+        */
+
+        Intent alarmIntent = new Intent(getActivity(), SunshineService.AlarmReceiver.class);
+        alarmIntent.putExtra(SunshineService.LOCATION_QUERY_EXTRA, Utility.getPreferredLocation(getActivity()));
+        // wrap in a pending intent which only fires once.
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 0, alarmIntent, PendingIntent.FLAG_ONE_SHOT);
+        AlarmManager alarmManager = (AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
+        // set the alarm manager to wake up the system
+        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 500, pendingIntent);
     }
 
     @Override
