@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="http://schemas.android.com/apk/res-auto">
 
+    <!-- Account type (for sync-adapter authenticator) -->
+    <!-- SyncAdapter related -->
+    <string name="sync_account_type">sunshine2.example.com</string>
+    <string name="content_authority">com.example.android.sunshine2.app</string>
+
     <!--
          Used in Action Bar, and in AndroidManifest to tell the device the name of this app.
          It's to keep this short, so your launcher icon isn't displayed with "The greatest Wea"
